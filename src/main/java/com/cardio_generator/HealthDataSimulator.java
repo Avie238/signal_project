@@ -25,6 +25,10 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 
+/**
+ * The {@code HealthDataSimulator} class is the entrypoint of the generator and
+ * is responsible for manageing the generation of patient data
+ */
 public class HealthDataSimulator {
 
   private static int patientCount = 50; // Default number of patients
@@ -44,6 +48,15 @@ public class HealthDataSimulator {
     scheduleTasksForPatients(patientIds);
   }
 
+  /**
+   * Parses the arguments provided to the app
+   * 
+   * @param args    a list of arguemnts provied
+   * 
+   * @param endTime the end of the time range, in milliseconds since UNIX epoch
+   * @return a list of PatientRecord objects that fall within the specified time
+   *         range
+   */
   private static void parseArguments(String[] args) throws IOException {
     for (int i = 0; i < args.length; i++) {
       switch (args[i]) {
