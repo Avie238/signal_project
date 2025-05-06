@@ -1,10 +1,15 @@
 # Cardio Data Simulator
 
-The Cardio Data Simulator is a Java-based application designed to simulate real-time cardiovascular data for multiple patients. This tool is particularly useful for educational purposes, enabling students to interact with real-time data streams of ECG, blood pressure, blood saturation, and other cardiovascular signals.
+The Cardio Data Simulator is a Java-based application designed to simulate
+real-time cardiovascular data for multiple patients. This tool is particularly
+useful for educational purposes, enabling students to interact with real-time
+data streams of ECG, blood pressure, blood saturation, and other cardiovascular
+signals.
 
 ## Features
 
-- Simulate real-time ECG, blood pressure, blood saturation, and blood levels data.
+- Simulate real-time ECG, blood pressure, blood saturation, and blood levels
+  data.
 - Supports multiple output strategies:
   - Console output for direct observation.
   - File output for data persistence.
@@ -37,7 +42,8 @@ The Cardio Data Simulator is a Java-based application designed to simulate real-
    ```sh
    mvn clean package
    ```
-   This step compiles the source code and packages the application into an executable JAR file located in the `target/` directory.
+   This step compiles the source code and packages the application into an
+   executable JAR file located in the `target/` directory.
 
 ### Running the Simulator
 
@@ -47,7 +53,8 @@ After packaging, you can run the simulator directly from the executable JAR:
 java -jar target/cardio_generator-1.0-SNAPSHOT.jar
 ```
 
-To run with specific options (e.g., to set the patient count and choose an output strategy):
+To run with specific options (e.g., to set the patient count and choose an
+output strategy):
 
 ```sh
 java -jar target/cardio_generator-1.0-SNAPSHOT.jar --patient-count 100 --output file:./output
@@ -56,14 +63,32 @@ java -jar target/cardio_generator-1.0-SNAPSHOT.jar --patient-count 100 --output 
 ### Supported Output Options
 
 - `console`: Directly prints the simulated data to the console.
-- `file:<directory>`: Saves the simulated data to files within the specified directory.
-- `websocket:<port>`: Streams the simulated data to WebSocket clients connected to the specified port.
-- `tcp:<port>`: Streams the simulated data to TCP clients connected to the specified port.
+- `file:<directory>`: Saves the simulated data to files within the specified
+  directory.
+- `websocket:<port>`: Streams the simulated data to WebSocket clients connected
+  to the specified port.
+- `tcp:<port>`: Streams the simulated data to TCP clients connected to the
+  specified port.
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
+for details.
 
 ## Project Members
 
 - Student ID: 6386407
+
+## Notes
+
+- All the files in this repo appear to be using 4 spaces instead of 2 as per the
+  google java style guide. My code editor is using the official
+  google-java-format formatter and that results in a lot of changes and makes
+  the git diff unreadable when first saving a new file. This is basically a
+  comment saying in this commit i will format every file in this repo using the
+  google-java-format formatter to be able to have cleaner git diffs, this
+  however makes it harder to know what else may the formatter changed. I will
+  comment all other style violation i will fix but if something was fixed by the
+  official formatter i feel the explanation is needed, in practice every
+  developer should use a formatter to keep at least some parts of a style guide
+  always obeyed.

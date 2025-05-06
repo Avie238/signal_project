@@ -16,6 +16,7 @@ public class FileOutputStrategy implements OutputStrategy {
   public FileOutputStrategy(String baseDirectory) {
 
     this.BaseDirectory = baseDirectory;
+    int a = 6;
   }
 
   @Override
@@ -28,12 +29,17 @@ public class FileOutputStrategy implements OutputStrategy {
       return;
     }
     // Set the FilePath variable
-    String FilePath = file_map.computeIfAbsent(label, k -> Paths.get(BaseDirectory, label + ".txt").toString());
+    String FilePath =
+        file_map.computeIfAbsent(label, k -> Paths.get(BaseDirectory, label + ".txt").toString());
 
     // Write the data to the file
-    try (PrintWriter out = new PrintWriter(
-        Files.newBufferedWriter(Paths.get(FilePath), StandardOpenOption.CREATE, StandardOpenOption.APPEND))) {
-      out.printf("Patient ID: %d, Timestamp: %d, Label: %s, Data: %s%n", patientId, timestamp, label, data);
+    try (PrintWriter out =
+        new PrintWriter(
+            Files.newBufferedWriter(
+                Paths.get(FilePath), StandardOpenOption.CREATE, StandardOpenOption.APPEND))) {
+      out.printf(
+          "Patient ID: %d, Timestamp: %d, Label: %s, Data: %s%n",
+          patientId, timestamp, label, data);
     } catch (Exception e) {
       System.err.println("Error writing to file " + FilePath + ": " + e.getMessage());
     }
