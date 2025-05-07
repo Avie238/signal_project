@@ -7,30 +7,31 @@ import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.concurrent.ConcurrentHashMap;
 
+// Renamed class name to use UpperCamelCase
 public class FileOutputStrategy implements OutputStrategy {
 
-  private String BaseDirectory;
+  // Renamed variable name to use lowerCamelCase.
+  private String baseDirectory;
 
-  public final ConcurrentHashMap<String, String> file_map = new ConcurrentHashMap<>();
+  // Renamed constant name to use UPPER_SNAKE_CASE
+  public final ConcurrentHashMap<String, String> FILE_MAP = new ConcurrentHashMap<>();
 
   public FileOutputStrategy(String baseDirectory) {
-
-    this.BaseDirectory = baseDirectory;
-    int a = 6;
+    this.baseDirectory = baseDirectory;
   }
 
   @Override
   public void output(int patientId, long timestamp, String label, String data) {
     try {
       // Create the directory
-      Files.createDirectories(Paths.get(BaseDirectory));
+      Files.createDirectories(Paths.get(baseDirectory));
     } catch (IOException e) {
       System.err.println("Error creating base directory: " + e.getMessage());
       return;
     }
     // Set the FilePath variable
     String FilePath =
-        file_map.computeIfAbsent(label, k -> Paths.get(BaseDirectory, label + ".txt").toString());
+        FILE_MAP.computeIfAbsent(label, k -> Paths.get(baseDirectory, label + ".txt").toString());
 
     // Write the data to the file
     try (PrintWriter out =

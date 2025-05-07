@@ -26,6 +26,9 @@
           maven
           zulu11
           google-java-format
+          (writeShellScriptBin "format" ''
+            google-java-format -r $(find . -type f -not -path '*/\.*' | sed 's/^\.\///g' | grep -E "\.java" | tr '\n' ' ')
+          '')
         ];
       };
     });
