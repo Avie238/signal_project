@@ -22,6 +22,14 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * The {@code HealthDataSimulator} class simulates health-related data generation for multiple
+ * patients. It supports different output strategies including console, file, WebSocket, and TCP
+ * socket.
+ *
+ * <p>Users can configure the number of simulated patients and the output method through
+ * command-line arguments.
+ */
 public class HealthDataSimulator {
 
   private static int patientCount = 50; // Default number of patients
@@ -30,6 +38,13 @@ public class HealthDataSimulator {
       new ConsoleOutputStrategy(); // Default output strategy
   private static final Random random = new Random();
 
+  /**
+   * Entry point of the simulator. Parses arguments, initializes patient data and output strategies,
+   * and schedules data generation tasks for each patient.
+   *
+   * @param args Command-line arguments to configure patient count and output strategy.
+   * @throws IOException If an error occurs while creating the base directory.
+   */
   public static void main(String[] args) throws IOException {
 
     parseArguments(args);
@@ -42,6 +57,25 @@ public class HealthDataSimulator {
     scheduleTasksForPatients(patientIds);
   }
 
+  /**
+   * Parses command-line arguments to set the patient count and select the desired output strategy.
+   * Supported arguments:
+   *
+   * <ul>
+   *   <li><code>-h</code>: Show help and exit.
+   *   <li><code>--patient-count &lt;count&gt;</code>: Set number of patients to simulate.
+   *   <li><code>--output &lt;type&gt;</code>: Set output type. Options:
+   *       <ul>
+   *         <li><code>console</code>
+   *         <li><code>file:&lt;directory&gt;</code>
+   *         <li><code>websocket:&lt;port&gt;</code>
+   *         <li><code>tcp:&lt;port&gt;</code>
+   *       </ul>
+   * </ul>
+   *
+   * @param args Command-line arguments.
+   * @throws IOException If an error occurs while creating the base directory.
+   */
   private static void parseArguments(String[] args) throws IOException {
     for (int i = 0; i < args.length; i++) {
       switch (args[i]) {
