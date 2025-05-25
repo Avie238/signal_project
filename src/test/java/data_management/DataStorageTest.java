@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import com.data_management.DataStorage;
 import com.data_management.PatientRecord;
+import com.data_management.RecordType;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 
@@ -13,9 +14,9 @@ class DataStorageTest {
   void testAddAndGetRecords() {
     // TODO Perhaps you can implement a mock data reader to mock the test data?
     // DataReader reader
-    DataStorage storage = new DataStorage();
-    storage.addPatientData(1, 100.0, "WhiteBloodCells", 1714376789050L);
-    storage.addPatientData(1, 200.0, "WhiteBloodCells", 1714376789051L);
+    DataStorage storage = DataStorage.getInstance();
+    storage.addPatientData(1, 100.0, RecordType.fromLabel("WhiteBloodCells"), 1714376789050L);
+    storage.addPatientData(1, 200.0, RecordType.fromLabel("WhiteBloodCells"), 1714376789051L);
 
     List<PatientRecord> records = storage.getRecords(1, 1714376789050L, 1714376789051L);
     assertEquals(2, records.size()); // Check if two records are retrieved

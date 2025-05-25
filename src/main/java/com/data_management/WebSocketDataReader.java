@@ -1,6 +1,7 @@
 package com.data_management;
 
 import java.net.URI;
+import java.net.URISyntaxException;
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;
 
@@ -8,8 +9,8 @@ public class WebSocketDataReader extends WebSocketClient implements DataReader {
 
   DataStorage storage;
 
-  public WebSocketDataReader(URI serverURI) {
-    super(serverURI);
+  public WebSocketDataReader(String serverURL) throws URISyntaxException {
+    super(new URI(serverURL));
     this.connect();
   }
 
@@ -34,14 +35,18 @@ public class WebSocketDataReader extends WebSocketClient implements DataReader {
 
     // If no storage defined just ignore the message
     if (storage != null) {
-      // Expected format: int,long,String,double
-      String[] parts = message.split(",");
-      int patientId = Integer.parseInt(parts[0]);
-      long timestamp = Long.parseLong(parts[1]);
-      String label = parts[2];
-      double data = Double.parseDouble(parts[3]);
+      try {
+        // Expected format: int,long,String,double
+        String[] parts = message.split(",");
+        int patientId = Integer.parseInt(parts[0]);
+        long timestamp = Long.parseLong(parts[1]);
+        RecordType label = RecordType.fromLabel(parts[2]);
+        double data = Double.parseDouble(parts[3]);
 
-      storage.addPatientData(patientId, data, label, timestamp);
+        storage.addPatientData(patientId, data, label, timestamp);
+      } catch (RuntimeException e) {
+        System.err.println("an error occurred when parsing the message:" + e);
+      }
     }
   }
 

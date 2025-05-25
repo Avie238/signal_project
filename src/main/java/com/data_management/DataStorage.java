@@ -1,7 +1,6 @@
 package com.data_management;
 
 import com.alerts.AlertGenerator;
-import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -13,12 +12,25 @@ import java.util.Map;
  * serves as a repository for all patient records, organized by patient IDs.
  */
 public class DataStorage {
+  private static DataStorage INSTANCE;
   private Map<Integer, Patient>
       patientMap; // Stores patient objects indexed by their unique patient ID.
 
   /** Constructs a new instance of DataStorage, initializing the underlying storage structure. */
-  public DataStorage() {
+  private DataStorage() {
     this.patientMap = new HashMap<>();
+  }
+
+  public DataStorage(boolean testing) {
+    this.patientMap = new HashMap<>();
+  }
+
+  public static DataStorage getInstance() {
+    if (INSTANCE == null) {
+      INSTANCE = new DataStorage();
+    }
+
+    return INSTANCE;
   }
 
   /**
@@ -33,7 +45,7 @@ public class DataStorage {
    *     epoch
    */
   public void addPatientData(
-      int patientId, double measurementValue, String recordType, long timestamp) {
+      int patientId, double measurementValue, RecordType recordType, long timestamp) {
     Patient patient = patientMap.get(patientId);
     if (patient == null) {
       patient = new Patient(patientId);
@@ -72,15 +84,16 @@ public class DataStorage {
    * continuously monitors and evaluates patient data.
    *
    * @param args command line arguments
+   * @throws URISyntaxException
    */
-  public static void main(String[] args) {
-    // DataReader is not defined in this scope, should be initialized appropriately.
-    // DataReader reader = new SomeDataReaderImplementation("path/to/data");
-    DataStorage storage = new DataStorage();
+  public static void main(String[] args) throws URISyntaxException {
+    DataStorage storage = DataStorage.getInstance();
+
+    WebSocketDataReader reader = new WebSocketDataReader("ws://localhost:2381");
 
     // Assuming the reader has been properly initialized and can read data into the
     // storage
-    // reader.readData(storage);
+    reader.readData(storage);
 
     // Example of using DataStorage to retrieve and print records for a patient
     List<PatientRecord> records = storage.getRecords(1, 1700000000000L, 1800000000000L);
@@ -102,13 +115,6 @@ public class DataStorage {
     // Evaluate all patients' data to check for conditions that may trigger alerts
     for (Patient patient : storage.getAllPatients()) {
       alertGenerator.evaluateData(patient);
-    }
-
-    try {
-      WebSocketDataReader dataReader = new WebSocketDataReader(new URI("ws://localhost:2381"));
-      dataReader.readData(storage);
-    } catch (URISyntaxException e) {
-      e.printStackTrace();
     }
   }
 }

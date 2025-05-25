@@ -29,7 +29,7 @@ public class Patient {
    * @param recordType the type of record, e.g., "HeartRate", "BloodPressure"
    * @param timestamp the time at which the measurement was taken, in milliseconds since UNIX epoch
    */
-  public void addRecord(double measurementValue, String recordType, long timestamp) {
+  public void addRecord(double measurementValue, RecordType recordType, long timestamp) {
     PatientRecord record =
         new PatientRecord(this.patientId, measurementValue, recordType, timestamp);
     this.patientRecords.add(record);

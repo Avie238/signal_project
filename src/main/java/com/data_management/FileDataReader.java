@@ -62,7 +62,7 @@ public class FileDataReader implements DataReader {
           String[] parts = line.split(", ");
           int patientId = Integer.parseInt(parts[0].split(": ")[1]);
           long timestamp = Long.parseLong(parts[1].split(": ")[1]);
-          String label = parts[2].split(": ")[1];
+          RecordType label = RecordType.fromLabel(parts[2].split(": ")[1]);
           double data = Double.parseDouble(parts[3].split(": ")[1]);
 
           storage.addPatientData(patientId, data, label, timestamp);

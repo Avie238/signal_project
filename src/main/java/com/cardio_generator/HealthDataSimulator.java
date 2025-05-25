@@ -32,11 +32,23 @@ import java.util.concurrent.TimeUnit;
  */
 public class HealthDataSimulator {
 
-  private static int patientCount = 50; // Default number of patients
-  private static ScheduledExecutorService scheduler;
-  private static OutputStrategy outputStrategy =
-      new ConsoleOutputStrategy(); // Default output strategy
-  private static final Random random = new Random();
+  private int patientCount = 50; // Default number of patients
+  private ScheduledExecutorService scheduler;
+  private OutputStrategy outputStrategy = new ConsoleOutputStrategy(); // Default output strategy
+  private final Random random = new Random();
+
+  private static HealthDataSimulator INSTANCE;
+
+  /** Constructs a new instance of HealthDataSimulator */
+  private HealthDataSimulator() {}
+
+  public static HealthDataSimulator getInstance() {
+    if (INSTANCE == null) {
+      INSTANCE = new HealthDataSimulator();
+    }
+
+    return INSTANCE;
+  }
 
   /**
    * Entry point of the simulator. Parses arguments, initializes patient data and output strategies,
@@ -47,14 +59,16 @@ public class HealthDataSimulator {
    */
   public static void main(String[] args) throws IOException {
 
-    parseArguments(args);
+    HealthDataSimulator simulator = HealthDataSimulator.getInstance();
 
-    scheduler = Executors.newScheduledThreadPool(patientCount * 4);
+    simulator.parseArguments(args);
 
-    List<Integer> patientIds = initializePatientIds(patientCount);
+    simulator.scheduler = Executors.newScheduledThreadPool(simulator.patientCount * 4);
+
+    List<Integer> patientIds = simulator.initializePatientIds(simulator.patientCount);
     Collections.shuffle(patientIds); // Randomize the order of patient IDs
 
-    scheduleTasksForPatients(patientIds);
+    simulator.scheduleTasksForPatients(patientIds);
   }
 
   /**
@@ -76,7 +90,7 @@ public class HealthDataSimulator {
    * @param args Command-line arguments.
    * @throws IOException If an error occurs while creating the base directory.
    */
-  private static void parseArguments(String[] args) throws IOException {
+  private void parseArguments(String[] args) throws IOException {
     for (int i = 0; i < args.length; i++) {
       switch (args[i]) {
         case "-h":
@@ -138,7 +152,7 @@ public class HealthDataSimulator {
     }
   }
 
-  private static void printHelp() {
+  private void printHelp() {
     System.out.println("Usage: java HealthDataSimulator [options]");
     System.out.println("Options:");
     System.out.println("  -h                       Show help and exit.");
@@ -157,7 +171,7 @@ public class HealthDataSimulator {
             + " connected to port 8080.");
   }
 
-  private static List<Integer> initializePatientIds(int patientCount) {
+  private List<Integer> initializePatientIds(int patientCount) {
     List<Integer> patientIds = new ArrayList<>();
     for (int i = 1; i <= patientCount; i++) {
       patientIds.add(i);
@@ -165,7 +179,7 @@ public class HealthDataSimulator {
     return patientIds;
   }
 
-  private static void scheduleTasksForPatients(List<Integer> patientIds) {
+  private void scheduleTasksForPatients(List<Integer> patientIds) {
     ECGDataGenerator ecgDataGenerator = new ECGDataGenerator(patientCount);
     BloodSaturationDataGenerator bloodSaturationDataGenerator =
         new BloodSaturationDataGenerator(patientCount);
@@ -190,7 +204,7 @@ public class HealthDataSimulator {
     }
   }
 
-  private static void scheduleTask(Runnable task, long period, TimeUnit timeUnit) {
+  private void scheduleTask(Runnable task, long period, TimeUnit timeUnit) {
     scheduler.scheduleAtFixedRate(task, random.nextInt(5), period, timeUnit);
   }
 }
