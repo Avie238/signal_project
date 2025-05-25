@@ -1,0 +1,8 @@
+The Patient class, holds a list of PatientRecord objects, encapsulating individual health measurements. This setup allows for scalable data collection per patient, where each record includes values such as measurement type, value, and timestamp.
+
+The PatientRecord class is designed as a lightweight data container with getter methods to expose its properties safely. Including the patient ID in the record ensures traceability and data consistency, especially useful in multi-patient contexts.
+
+DataStorage acts as a centralized repository for patient data, managing patients through a map structure. This ensures quick access and efficient querying. It exposes methods to add new data and retrieve records over a time range, abstracting data management from other components.
+
+The DataRetriever class is an abstraction layer that encapsulates the retrieval logic, promoting separation of concerns. By depending on DataStorage, it decouples the data access interface from the storage logic, which enhances maintainability and flexibility for future extensions (e.g., adding filters or aggregations).
+

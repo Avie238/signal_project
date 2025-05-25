@@ -1,0 +1,11 @@
+The Patient class, holds a list of PatientRecord objects, encapsulating individual health measurements. This setup allows for scalable data collection per patient, where each record includes values such as measurement type, value, and timestamp.
+
+The PatientRecord class is designed as a lightweight data container with getter methods to expose its properties safely. Including the patient ID in the record ensures traceability and data consistency, especially useful in multi-patient contexts.
+
+The Threshold class represents criteria for acceptable measurements. Each threshold can be associated with a measurement type and includes a method to check if a value exceeds acceptable limits, providing a reusable mechanism for defining and checking health conditions.
+
+DataStorage acts as a centralized repository for patient data, managing patients through a map structure. This ensures quick access and efficient querying. It exposes methods to add new data and retrieve records over a time range, abstracting data management from other components.
+
+The AlertGenerator is responsible for analyzing data against thresholds. By separating alert logic from storage and patient management, the system ensures that logic for generating alerts is both modular and testable. It uses evaluateData() to scan for issues and triggerAlert() to issue warnings.
+
+Alert objects represent these warnings, carrying patient-specific information and the condition that triggered them. AlertManager then manages the life cycle of alerts—dispatching, tracking, and resolving them.
