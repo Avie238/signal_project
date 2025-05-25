@@ -2,6 +2,8 @@ package com.alerts;
 
 import com.data_management.DataStorage;
 import com.data_management.Patient;
+import com.data_management.PatientRecord;
+import java.util.List;
 
 /**
  * The {@code AlertGenerator} class is responsible for monitoring patient data and generating alerts
@@ -29,7 +31,9 @@ public class AlertGenerator {
    * @param patient the patient data to evaluate for alert conditions
    */
   public void evaluateData(Patient patient) {
-    // Implementation goes here
+    // 600000ms == 10 minutes
+    List<PatientRecord> records =
+        patient.getRecords(System.currentTimeMillis() - 600000, System.currentTimeMillis());
   }
 
   /**

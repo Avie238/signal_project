@@ -1,6 +1,8 @@
 package com.data_management;
 
 import com.alerts.AlertGenerator;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -100,6 +102,13 @@ public class DataStorage {
     // Evaluate all patients' data to check for conditions that may trigger alerts
     for (Patient patient : storage.getAllPatients()) {
       alertGenerator.evaluateData(patient);
+    }
+
+    try {
+      WebSocketDataReader dataReader = new WebSocketDataReader(new URI("ws://localhost:2381"));
+      dataReader.readData(storage);
+    } catch (URISyntaxException e) {
+      e.printStackTrace();
     }
   }
 }

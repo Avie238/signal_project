@@ -25,10 +25,9 @@
         packages = with pkgs; [
           maven
           zulu11
-          google-java-format
-          (writeShellScriptBin "format" ''
-            google-java-format -r $(find . -type f -not -path '*/\.*' | sed 's/^\.\///g' | grep -E "\.java" | tr '\n' ' ')
-          '')
+          (pkgs.writeShellScriptBin "run" "mvn spring-boot:run")
+          (pkgs.writeShellScriptBin "run_data" "mvn spring-boot:run -Dspring-boot.run.arguments=DataStorage")
+          (pkgs.writeShellScriptBin "run_test" "mvn clean test")
         ];
       };
     });

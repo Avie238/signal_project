@@ -54,11 +54,11 @@ public class BloodSaturationDataGenerator implements PatientDataGenerator {
       // Ensure the saturation stays within a realistic and healthy range
       newSaturationValue = Math.min(Math.max(newSaturationValue, 90), 100);
       lastSaturationValues[patientId] = newSaturationValue;
+      // NOTE:  Deleted the percangege sign in the end all data for the data storage is stored as a
+      // number
+      // so that sign will be lost either way, there is no need to add it.
       outputStrategy.output(
-          patientId,
-          System.currentTimeMillis(),
-          "Saturation",
-          Double.toString(newSaturationValue) + "%");
+          patientId, System.currentTimeMillis(), "Saturation", Double.toString(newSaturationValue));
     } catch (Exception e) {
       System.err.println(
           "An error occurred while generating blood saturation data for patient " + patientId);
